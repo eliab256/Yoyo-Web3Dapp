@@ -53,7 +53,7 @@ const ClaimFailedRefundButton: React.FC = () => {
             {error && !isWritePending && !isConfirming && (
                 <ErrorBox
                     title="Claim Refund Failed"
-                    message={error.message}
+                    errorMessage={error}
                     onClose={() => window.location.reload()}
                 />
             )}

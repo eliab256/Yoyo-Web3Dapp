@@ -51,7 +51,7 @@ const ClaimNftButton: React.FC = () => {
 
             {/* Warning Box when there is an error */}
             {error && !isWritePending && !isConfirming && (
-                <ErrorBox title="Claim NFT Failed" message={error.message} onClose={() => window.location.reload()} />
+                <ErrorBox title="Claim NFT Failed" errorMessage={error} onClose={() => window.location.reload()} />
             )}
 
             {/* Popup for no unclaimed NFTs */}

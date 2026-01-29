@@ -228,7 +228,7 @@ const NftDetails: React.FC<NftData> = ({ tokenId, metadata, image }) => {
             {error && !isWritePending && !isConfirming && (
                 <ErrorBox
                     title="Transfer NFT Failed"
-                    message={error.message}
+                    errorMessage={error}
                     onClose={() => window.location.reload()}
                 />
             )}

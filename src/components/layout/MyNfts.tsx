@@ -41,7 +41,7 @@ const MyNfts: React.FC = () => {
                     <h1>My Nfts</h1>
                 </div>
 
-                <ErrorBox title="Wallet not connected" message="Please connect your wallet to view your products." />
+                <ErrorBox title="Wallet not connected" displayMessage="Please connect your wallet to view your products." />
             </div>
         );
     }
@@ -69,7 +69,7 @@ const MyNfts: React.FC = () => {
                 <div className="px-2 sm:px-4 text-center">
                     <h1>My Nfts</h1>
                 </div>
-                 <ErrorBox title="Error loading NFTs" message={`${error}. Please try again later.`} />
+                 <ErrorBox title="Error loading NFTs" errorMessage={error} />
             </div>
         );
     }
@@ -84,7 +84,7 @@ const MyNfts: React.FC = () => {
                 {isConnected && address && !hasNfts && !isLoading && !error && (
                     <ErrorBox
                         title="You don't hold any NFTs yet"
-                        message="Go to the auction page and place a bid to win your first NFT."
+                        displayMessage="Go to the auction page and place a bid to win your first NFT."
                     />
                 )}
                 {/* wallet is connected and the user has bought products */}

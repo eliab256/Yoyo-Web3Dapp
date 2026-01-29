@@ -2,12 +2,17 @@ import { XMarkIcon } from '@heroicons/react/24/solid';
 
 interface ErrorBoxProps {
     title: string;
-    message: string;
+    displayMessage?: string;
+    errorMessage?: Error | string;
     onClose?: () => void;
 }
 
-const ErrorBox: React.FC<ErrorBoxProps> = ({ title, message, onClose }) => {
-    console.log(`${title} Error :`, message);
+const ErrorBox: React.FC<ErrorBoxProps> = ({ title, displayMessage, errorMessage, onClose }) => {
+    if (errorMessage) { 
+        console.log(`${title} Error :`, errorMessage);
+    }
+
+    const messageToDisplay = displayMessage ? displayMessage : 'Check console for more details.';
 
     // When onClose is provided, render a modal with overlay
     if (onClose) {
@@ -25,7 +30,7 @@ const ErrorBox: React.FC<ErrorBoxProps> = ({ title, message, onClose }) => {
                         </button>
 
                         <h2 className="text-xl md:text-2xl font-semibold text-red-700 mb-2">{title}</h2>
-                        <p className="text-red-600">{'Check console for more details.'}</p>
+                        <p className="text-red-600">{messageToDisplay}</p>
                     </div>
                 </div>
             </div>
@@ -37,7 +42,7 @@ const ErrorBox: React.FC<ErrorBoxProps> = ({ title, message, onClose }) => {
         <div className="mx-auto my-8 max-w-md px-4">
             <div className="relative border-red-500 border-2 bg-white rounded-2xl shadow-lg p-6 text-center animate-pulse">
                 <h2 className="text-xl md:text-2xl font-semibold text-red-700 mb-2">{title}</h2>
-                <p className="text-red-600">{'Check console for more details.'}</p>
+                <p className="text-red-600">{messageToDisplay}</p>
             </div>
         </div>
     );

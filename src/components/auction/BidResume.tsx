@@ -83,7 +83,7 @@ const BidResume: React.FC<BidResumeProps> = ({ bidAmount }) => {
         return (
             <ErrorBox
                 title="Bid Placement Failed"
-                message={error.message}
+                errorMessage={error}
                 onClose={() => dispatch(resetConfirmPlaceBid())}
             />
         );

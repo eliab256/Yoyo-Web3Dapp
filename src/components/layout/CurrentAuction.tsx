@@ -111,10 +111,7 @@ const CurrentAuction: React.FC = () => {
         return (
             <div className="w-full flex flex-col items-center px-2 sm:px-4 lg:min-h-[calc(100vh-var(--headerAndFooterHeight)*2)]">
                 <h1 className="text-center">Current Auction</h1>
-                <ErrorBox
-                    title="Error Loading Bid Status"
-                    message={`There was an error retrieving your bid status: ${userBidStatusError.message}`}
-                />
+                <ErrorBox title="Error Loading Bid Status" errorMessage={userBidStatusError} />
             </div>
         );
     }
