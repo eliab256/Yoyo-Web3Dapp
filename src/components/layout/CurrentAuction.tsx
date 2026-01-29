@@ -11,6 +11,7 @@ import { setIsConfirmBidPanelOpen, selectIsConfirmBidPanelOpen } from '../../red
 import { useAccount } from 'wagmi';
 import ErrorBox from '../ui/ErrorBox';
 import LoadingBox from '../ui/LoadingBox';
+import WarningBox from '../ui/WarningBox';
 
 const CurrentAuction: React.FC = () => {
     const dispatch = useDispatch();
@@ -123,9 +124,9 @@ const CurrentAuction: React.FC = () => {
         return (
             <div className="w-full flex flex-col items-center px-2 sm:px-4 lg:min-h-[calc(100vh-var(--headerAndFooterHeight)*2)]">
                 <h1 className="text-center">Current Auction</h1>
-                <ErrorBox
+                <WarningBox
                     title="No Active Auction"
-                    message="There is currently no active auction. Please check back later."
+                    message="There is currently no active auction. Wait until the next auction starts."
                 />
             </div>
         );
