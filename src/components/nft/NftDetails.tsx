@@ -82,38 +82,38 @@ const NftDetails: React.FC<NftData> = ({ tokenId, metadata, image }) => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                     {/* Category */}
                     <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
-                        <p className="text-base text-blue-600 font-semibold mb-1">Category</p>
-                        <p className="text-lg sm:text-xl text-blue-900 font-medium">{category}</p>
+                        <p className="text-sm sm:text-base text-blue-600 font-semibold mb-1">Category</p>
+                        <p className="text-base sm:text-xl text-blue-900 font-medium">{category}</p>
                     </div>
 
                     {/* Course Type */}
                     <div className="bg-green-50 rounded-lg p-3 border border-green-200">
-                        <p className="text-base text-green-600 font-semibold mb-1">Course Type</p>
-                        <p className="text-lg sm:text-xl text-green-900 font-medium">{course_type}</p>
+                        <p className="text-sm sm:text-base text-green-600 font-semibold mb-1">Course Type</p>
+                        <p className="text-base sm:text-xl text-green-900 font-medium">{course_type}</p>
                     </div>
 
                     {/* Accessibility Level */}
                     <div className="bg-yellow-50 rounded-lg p-3 border border-yellow-200">
-                        <p className="text-base text-yellow-600 font-semibold mb-1">Accessibility Level</p>
-                        <p className="text-lg sm:text-xl text-yellow-900 font-medium">{accessibility_level}</p>
+                        <p className="text-sm sm:text-base text-yellow-600 font-semibold mb-1">Accessibility Level</p>
+                        <p className="text-base sm:text-xl text-yellow-900 font-medium">{accessibility_level}</p>
                     </div>
 
                     {/* Style */}
                     <div className="bg-pink-50 rounded-lg p-3 border border-pink-200">
-                        <p className="text-base text-pink-600 font-semibold mb-1">Style</p>
-                        <p className="text-lg sm:text-xl text-pink-900 font-medium">{style}</p>
+                        <p className="text-sm sm:text-base text-pink-600 font-semibold mb-1">Style</p>
+                        <p className="text-base sm:text-xl text-pink-900 font-medium">{style}</p>
                     </div>
 
                     {/* Redeemable */}
                     <div className="bg-purple-50 rounded-lg p-3 border border-purple-200">
-                        <p className="text-base text-purple-600 font-semibold mb-1">Redeemable</p>
-                        <p className="text-lg sm:text-xl text-purple-900 font-medium">{redeemable ? 'Yes' : 'No'}</p>
+                        <p className="text-sm sm:text-base text-purple-600 font-semibold mb-1">Redeemable</p>
+                        <p className="text-base sm:text-xl text-purple-900 font-medium">{redeemable ? 'Yes' : 'No'}</p>
                     </div>
 
                     {/* Instructor Certified */}
                     <div className="bg-indigo-50 rounded-lg p-3 border border-indigo-200">
-                        <p className="text-base text-indigo-600 font-semibold mb-1">Instructor Certified</p>
-                        <p className="text-lg sm:text-xl text-indigo-900 font-medium">
+                        <p className="text-sm sm:text-base text-indigo-600 font-semibold mb-1">Instructor Certified</p>
+                        <p className="text-base sm:text-xl text-indigo-900 font-medium">
                             {instructor_certified ? 'Yes' : 'No'}
                         </p>
                     </div>
@@ -129,11 +129,14 @@ const NftDetails: React.FC<NftData> = ({ tokenId, metadata, image }) => {
                             key={index}
                             className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-3 border border-gray-200 hover:shadow-md transition-shadow"
                         >
-                            <p className="text-xs text-gray-500 font-semibold mb-1 truncate" title={attr.trait_type}>
+                            <p
+                                className="text-[10px] sm:text-xs text-gray-500 font-semibold mb-1 truncate"
+                                title={attr.trait_type}
+                            >
                                 {attr.trait_type}
                             </p>
                             <p
-                                className="text-sm sm:text-base text-gray-900 font-bold truncate"
+                                className="text-xs sm:text-base text-gray-900 font-bold truncate"
                                 title={String(attr.value)}
                             >
                                 {attr.value}
@@ -226,11 +229,7 @@ const NftDetails: React.FC<NftData> = ({ tokenId, metadata, image }) => {
 
             {/* Warning Box when there is an error */}
             {error && !isWritePending && !isConfirming && (
-                <ErrorBox
-                    title="Transfer NFT Failed"
-                    errorMessage={error}
-                    onClose={() => window.location.reload()}
-                />
+                <ErrorBox title="Transfer NFT Failed" errorMessage={error} onClose={() => window.location.reload()} />
             )}
         </div>
     );

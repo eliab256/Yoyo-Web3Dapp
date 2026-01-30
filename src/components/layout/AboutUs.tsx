@@ -1,6 +1,6 @@
 import logoImage from '../../assets/images/Yoyo-Logo-Scritta-Scura.png';
-import yogaForEveryoneImg from '../../assets/images/AboutUs-Yoga-For-EveryOne.png';
-import practiceYogaYourWayImg from '../../assets/images/Aboutus-Practice-Yoga-Your-Way.png';
+import yogaForEveryoneImg from '../../assets/images/AboutUs-Yoga-For-EveryOne-2.png';
+import practiceYogaYourWayImg from '../../assets/images/Aboutus-Practice-Yoga-Your-Way-2.png';
 
 const AboutUs: React.FC = () => {
     return (
@@ -33,7 +33,7 @@ const AboutUs: React.FC = () => {
                 {/* Section 2: Practice Yoga Your Way */}
                 <div className="mb-12">
                     <h3 className="m-2 sm:m-4 text-center">Practice Yoga, Your Way</h3>
-                    <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
+                    <div className="flex flex-col md:flex-row items-center md:items-center gap-8">
                         <div className="w-full md:w-1/2 flex justify-center">
                             <img
                                 src={practiceYogaYourWayImg}
@@ -55,7 +55,7 @@ const AboutUs: React.FC = () => {
                 {/* Section 3: Inclusivity with Image */}
                 <div className="mb-12">
                     <h3 className="m-2 sm:m-4 text-center">Inclusive By Design, Empowering By Nature</h3>
-                    <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
+                    <div className="flex flex-col md:flex-row items-center md:items-center gap-8">
                         <div className="w-full md:w-1/2 flex justify-center">
                             <img
                                 src={yogaForEveryoneImg}

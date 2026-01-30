@@ -133,14 +133,14 @@ const CurrentAuction: React.FC = () => {
         <div className="w-full flex flex-col items-center px-2 sm:px-4 lg:min-h-[calc(100vh-var(--headerAndFooterHeight)*2)]">
             <h1 className="text-center">Current Auction</h1>
             <h2 className="text-center">Auction ID: {auctionId}</h2>
-            <div className="flex flex-col lg:flex-row items-center justify-center mt-3 w-full max-w-6xl">
-                <div className="mb-4 lg:mb-0 lg:mr-8">
+            <div className="flex flex-col lg:flex-row items-center justify-center mt-3 w-full max-w-6xl ">
+                <div className="mb-4 lg:mb-0 lg:mr-8 p-1">
                     <NftCard tokenId={Number(tokenId)} />
                 </div>
 
                 {/* Bid Placement Section */}
                 <div
-                    className="max-w-md w-full p-4 bg-white rounded-xl"
+                    className="max-w-md w-full px-6 py-3 bg-white rounded-xl"
                     style={{
                         boxShadow: '0 10px 25px -5px rgba(130, 95, 170, 0.5), 0 8px 10px -6px rgba(130, 95, 170, 0.3)',
                     }}
