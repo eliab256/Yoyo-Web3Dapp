@@ -2,7 +2,6 @@
 *
 
 # except the following
-!scripts/
 !Dockerfile
 !.dockerignore
 !rindexer

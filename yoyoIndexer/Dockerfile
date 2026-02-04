@@ -1,22 +1,22 @@
-# syntax = docker/dockerfile:1
-FROM ghcr.io/o-az/rindexer-dev:main
+# syntax = docker/dockerfile:1.6
+FROM ghcr.io/joshstevens19/rindexer:latest AS rindexer
 
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-
-ARG DEBIAN_FRONTEND="noninteractive"
-ARG DEBCONF_NOWARNINGS="yes"
-ARG DEBCONF_TERSE="yes"
-ARG LANG="C.UTF-8"
-
-WORKDIR /app
+USER root
+RUN apt-get update && \
+    apt-get install -y lsof net-tools procps && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 ARG PROJECT_PATH="./rindexer"
 
-COPY ${PROJECT_PATH} ${PROJECT_PATH}
+WORKDIR /usr/src/app
 
-COPY ./scripts/entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+COPY ${PROJECT_PATH} /usr/src/app/rindexer-app
 
-EXPOSE 3001
+ARG PORT="3001"
+ENV PORT=${PORT}
 
-ENTRYPOINT [ "/entrypoint.sh" ]
+EXPOSE ${PORT}
+
+ENTRYPOINT ["/app/rindexer"]
+CMD ["start", "-p", "./rindexer-app", "all"]

@@ -45,4 +45,4 @@ contracts:
       - YoyoNft__NftMinted
       - Transfer
 global:
-  health_port: 3001
+  health_port: 8081
