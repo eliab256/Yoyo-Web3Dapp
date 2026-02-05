@@ -14,8 +14,8 @@ const WarningBox: React.FC<WarningBoxProps> = ({ title, message }) => {
                 <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <span className="text-4xl">ℹ️</span>
                 </div>
-                <h2 className="text-xl md:text-2xl font-semibold text-yellow-700 mb-2">{title}</h2>
-                <p className="text-yellow-600 mb-4">{message}</p>
+                <h2 className="text-2xl md:text-3xl font-semibold text-yellow-700 mb-2">{title}</h2>
+                <p className="text-lg text-yellow-600 mb-4">{message}</p>
             </div>
         </>
     );

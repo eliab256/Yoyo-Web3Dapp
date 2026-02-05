@@ -8,7 +8,7 @@ interface ErrorBoxProps {
 }
 
 const ErrorBox: React.FC<ErrorBoxProps> = ({ title, displayMessage, errorMessage, onClose }) => {
-    if (errorMessage) { 
+    if (errorMessage) {
         console.log(`${title} Error :`, errorMessage);
     }
 
@@ -29,8 +29,8 @@ const ErrorBox: React.FC<ErrorBoxProps> = ({ title, displayMessage, errorMessage
                             <XMarkIcon className="h-4 w-4 text-white" />
                         </button>
 
-                        <h2 className="text-xl md:text-2xl font-semibold text-red-700 mb-2">{title}</h2>
-                        <p className="text-red-600">{messageToDisplay}</p>
+                        <h2 className="text-2xl md:text-3xl font-semibold text-red-700 mb-2">{title}</h2>
+                        <p className="text-lg text-red-600">{messageToDisplay}</p>
                     </div>
                 </div>
             </div>
@@ -41,8 +41,8 @@ const ErrorBox: React.FC<ErrorBoxProps> = ({ title, displayMessage, errorMessage
     return (
         <div className="mx-auto my-8 max-w-md px-4">
             <div className="relative border-red-500 border-2 bg-white rounded-2xl shadow-lg p-6 text-center animate-pulse">
-                <h2 className="text-xl md:text-2xl font-semibold text-red-700 mb-2">{title}</h2>
-                <p className="text-red-600">{messageToDisplay}</p>
+                <h2 className="text-2xl md:text-3xl font-semibold text-red-700 mb-2">{title}</h2>
+                <p className="text-lg text-red-600">{messageToDisplay}</p>
             </div>
         </div>
     );

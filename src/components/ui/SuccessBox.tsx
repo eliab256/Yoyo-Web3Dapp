@@ -6,7 +6,7 @@ interface SuccessBoxProps {
 }
 
 const SuccessBox: React.FC<SuccessBoxProps> = ({ title, message, txHash, onClose }) => {
-        const handleBackdropClick = () => {
+    const handleBackdropClick = () => {
         if (onClose) {
             onClose();
         }
@@ -24,8 +24,8 @@ const SuccessBox: React.FC<SuccessBoxProps> = ({ title, message, txHash, onClose
                     <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                         <span className="text-4xl">✅</span>
                     </div>
-                    <h2 className="text-xl md:text-2xl font-semibold text-green-700 mb-2">{title}</h2>
-                    <p className="text-green-600 mb-4">{message}</p>
+                    <h2 className="text-2xl md:text-3xl font-semibold text-green-700 mb-2">{title}</h2>
+                    <p className="text-lg text-green-600 mb-4">{message}</p>
                 </div>
 
                 {etherscanLink && (
