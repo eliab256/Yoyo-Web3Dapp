@@ -133,20 +133,20 @@ const CurrentAuction: React.FC = () => {
         <div className="w-full flex flex-col items-center px-2 sm:px-4 lg:min-h-[calc(100vh-var(--headerAndFooterHeight)*2)]">
             <h1 className="text-center">Current Auction</h1>
             <h2 className="text-center">Auction ID: {auctionId}</h2>
-            <div className="flex flex-col lg:flex-row items-center justify-center mt-3 w-full max-w-6xl ">
+            <div className="flex flex-col lg:flex-row items-center justify-center mt-1 w-full max-w-6xl ">
                 <div className="mb-4 lg:mb-0 lg:mr-8 p-1">
                     <NftCard tokenId={Number(tokenId)} />
                 </div>
 
                 {/* Bid Placement Section */}
                 <div
-                    className="max-w-md w-full px-6 py-3 bg-white rounded-xl"
+                    className="max-w-md w-full px-6 py-2 bg-white rounded-xl"
                     style={{
                         boxShadow: '0 10px 25px -5px rgba(130, 95, 170, 0.5), 0 8px 10px -6px rgba(130, 95, 170, 0.3)',
                     }}
                 >
-                    <h2 className="text-2xl font-bold text-center mb-2">Place Your Bid Here</h2>
-                    <p className="text-lg text-center mb-3 w-full">
+                    <h2 className="text-2xl font-bold text-center mb-1">Place Your Bid Here</h2>
+                    <p className="text-lg text-center mb-2 w-full">
                         This is {auctionType === 0 ? 'an English' : 'a Dutch'} auction
                         <br></br>
                         {auctionType === 0
@@ -154,7 +154,7 @@ const CurrentAuction: React.FC = () => {
                             : "In a Dutch auction the price drops over time, the first bidder wins. Don't wait."}
                     </p>
 
-                    <div className="space-y-3">
+                    <div className="space-y-1">
                         <div className="flex justify-between items-center">
                             <span className="font-semibold">Starting Price:</span>
                             <span className="text-lg">
@@ -181,7 +181,7 @@ const CurrentAuction: React.FC = () => {
                                 {/* User Bid Status Box */}
                                 {(userHasBid || userIsWinning) && (
                                     <div
-                                        className={`mt-3 p-3 rounded-lg text-center ${
+                                        className={`mt-3 p-1 rounded-lg text-center ${
                                             userIsWinning
                                                 ? 'bg-green-50 border-2 border-green-500'
                                                 : 'bg-yellow-50 border-2 border-yellow-500'
@@ -215,7 +215,7 @@ const CurrentAuction: React.FC = () => {
                             </div>
                         )}
 
-                        <div className="mt-6 pt-4 border-t border-gray-200">
+                        <div className="mt-2 pt-2 border-t border-gray-200">
                             <label className="block font-semibold mb-2">Your Offer:</label>
                             <input
                                 type="number"
@@ -236,11 +236,11 @@ const CurrentAuction: React.FC = () => {
                                           ? `${formatEther(higherBid)} ETH`
                                           : '0 ETH'
                                 }
-                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
                             />
                             <p className="text-sm text-gray-500 mt-1">≈ ${userBidUsd} USD</p>
                             <button
-                                className="w-full mt-4 px-6 py-3 bg-[#825FAA] hover:bg-[#6d4d8a] active:bg-[#5a3d6f] text-white font-semibold rounded-lg transition-colors duration-200 cursor-pointer disabled:bg-gray-400 disabled:cursor-not-allowed disabled:hover:bg-gray-400"
+                                className="w-full mt-2 px-6 py-2 bg-[#825FAA] hover:bg-[#6d4d8a] active:bg-[#5a3d6f] text-white font-semibold rounded-lg transition-colors duration-200 cursor-pointer disabled:bg-gray-400 disabled:cursor-not-allowed disabled:hover:bg-gray-400"
                                 onClick={() => dispatch(setIsConfirmBidPanelOpen(true))}
                                 disabled={!isBidValid || !isConnected}
                             >

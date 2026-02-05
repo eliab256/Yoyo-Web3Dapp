@@ -11,7 +11,7 @@
     --thirdGreen: rgb(120, 180, 150);
 
     /* Misure*/
-    --headerAndFooterHeight: 4.5rem;
+    --headerAndFooterHeight: 3.5rem;
 }
 
 @layer base {
@@ -51,7 +51,7 @@
     }
 
     h1 {
-        @apply text-[8vw] sm:text-[6vw] md:text-[5vw] lg:text-[4vw];
+        @apply text-[7.5vw] sm:text-[5.5vw] md:text-[4.5vw] lg:text-[3.5vw];
         background: linear-gradient(to left, var(--mainPurple) 10%, var(--mainGreen) 90%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -60,7 +60,7 @@
     }
 
     h2 {
-        @apply text-[5vw] sm:text-[4vw] md:text-[3vw] lg:text-[2vw];
+        @apply text-[4.5vw] sm:text-[3.5vw] md:text-[2.5vw] lg:text-[1.8vw];
     }
 
     h3 {
@@ -73,7 +73,7 @@
     }
 
     p {
-        @apply cursor-default font-['Dancing_Script',_cursive] text-base sm:text-lg;
+        @apply cursor-default font-['Dancing_Script',_cursive] text-lg sm:text-base md:text-lg;
     }
 }
 
