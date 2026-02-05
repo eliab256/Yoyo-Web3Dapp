@@ -26,7 +26,7 @@ import {
 
 const GRAPHQL_ENDPOINT = import.meta.env.VITE_INDEXER_URL_PROD || import.meta.env.VITE_INDEXER_URL_DEV;
 
-async function fetchGraphQL(query: string, variables: Record<string, any> = {}) {
+async function fetchGraphQL<T>(query: string, variables: Record<string, any> = {}) {
     const response = await fetch(GRAPHQL_ENDPOINT, {
         method: 'POST',
         headers: {
@@ -44,55 +44,55 @@ async function fetchGraphQL(query: string, variables: Record<string, any> = {}) 
         throw new Error(errors[0].message);
     }
 
-    return data;
+    return data as T;
 }
 
 export async function getReceivedNFTs(ownerAddress: Address): Promise<TransferEvent[]> {
-    const data = (await fetchGraphQL(GET_RECEIVED_NFTS, {
+    const data = await fetchGraphQL<TransfersResponse>(GET_RECEIVED_NFTS, {
         ownerAddress: ownerAddress.toLowerCase(),
-    })) as TransfersResponse;
+    });
     return data.allTransfers.nodes;
 }
 
 export async function getSentNFTs(ownerAddress: Address): Promise<TransferEvent[]> {
-    const data = (await fetchGraphQL(GET_SENT_NFTS, { ownerAddress: ownerAddress.toLowerCase() })) as TransfersResponse;
+    const data = await fetchGraphQL<TransfersResponse>(GET_SENT_NFTS, { ownerAddress: ownerAddress.toLowerCase() });
     return data.allTransfers.nodes;
 }
 
 export async function getBidHistoryFromAuctionId(auctionId: string): Promise<BidPlaced[]> {
-    const data = (await fetchGraphQL(GET_BID_HYSTORY_FROM_AUCTION_ID, { auctionId: auctionId })) as BidsResponse;
+    const data = await fetchGraphQL<BidsResponse>(GET_BID_HYSTORY_FROM_AUCTION_ID, { auctionId: auctionId });
     return data.allYoyoAuctionBidPlaceds.nodes;
 }
 
 export async function getAuctionsLifecycle(): Promise<AuctionsLifecycleResponse> {
-    const data = (await fetchGraphQL(GET_AUCTIONS_LIFECYCLE)) as AuctionsLifecycleResponse;
+    const data = await fetchGraphQL<AuctionsLifecycleResponse>(GET_AUCTIONS_LIFECYCLE);
     return data;
 }
 
 export async function getBidderRefundsByAddress(address: Address): Promise<BidderRefund[]> {
-    const data = (await fetchGraphQL(GET_BIDDER_REFUNDS, {
+    const data = await fetchGraphQL<BidderRefundsResponse>(GET_BIDDER_REFUNDS, {
         bidderAddress: address.toLowerCase(),
-    })) as BidderRefundsResponse;
+    });
     return data.allYoyoAuctionBidderRefundeds.nodes;
 }
 
 export async function getBidderFailedRefundsByAddress(address: Address): Promise<BidderRefund[]> {
-    const data = (await fetchGraphQL(GET_BIDDER_FAILED_REFUNDS, {
+    const data = await fetchGraphQL<BidderFailedRefundResponse>(GET_BIDDER_FAILED_REFUNDS, {
         addr: address.toLowerCase(),
-    })) as BidderFailedRefundResponse;
+    });
     return data.allYoyoAuctionBidderRefundFaileds.nodes;
 }
 
 export async function getAllFinalizedAuctions(address: Address): Promise<FinalizedAuction[]> {
-    const data = (await fetchGraphQL(GET_ALL_FINALIZED_AUCTIONS, {
+    const data = await fetchGraphQL<FinalizedAuctionsResponse>(GET_ALL_FINALIZED_AUCTIONS, {
         addr: address.toLowerCase(),
-    })) as FinalizedAuctionsResponse;
+    });
     return data.allYoyoAuctionAuctionFinalizeds.nodes;
 }
 
 export async function getAllMintFailed(address: Address): Promise<FailedMint[]> {
-    const data = (await fetchGraphQL(GET_ALL_MINT_FAILED, {
+    const data = await fetchGraphQL<FailedMintResponse>(GET_ALL_MINT_FAILED, {
         addr: address.toLowerCase(),
-    })) as FailedMintResponse;
+    });
     return data.allYoyoAuctionMintFaileds.nodes;
 }

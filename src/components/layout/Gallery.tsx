@@ -12,16 +12,16 @@ const Gallery: React.FC = () => {
     const currentNftSelected = useSelector(selectSelectedNftId);
     const selectedNft: NftData | undefined = nftData.find(nft => nft.tokenId === currentNftSelected);
     const imagesRef = useRef<(HTMLImageElement | null)[]>([]);
-    const gridRef = useRef<HTMLDivElement>(null);
+    //const gridRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const animateImages = () => {
-            imagesRef.current.forEach(img => {
+            imagesRef.current.forEach((img, index) => {
                 if (img) {
                     const randomX = Math.random() * 100 - 50;
                     const randomY = Math.random() * 100 - 50;
-                    const randomDelay = Math.random() * 3;
-                    const randomDuration = 3 + Math.random() * 3;
+                    const sequentialDelay = index * 0.15;
+                    const duration = 4;
 
                     gsap.fromTo(
                         img,
@@ -38,8 +38,8 @@ const Gallery: React.FC = () => {
                             x: 0,
                             y: 0,
                             rotation: 0,
-                            duration: randomDuration,
-                            delay: randomDelay,
+                            duration: duration,
+                            delay: sequentialDelay,
                             repeat: -1,
                             yoyo: true,
                             ease: 'power3.inOut',
@@ -63,9 +63,9 @@ const Gallery: React.FC = () => {
         };
     }, [currentNftSelected]);
 
-    const scrollToGrid = () => {
-        gridRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    };
+    // const scrollToGrid = () => {
+    //     gridRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // };
 
     return (
         <div className="flex flex-col items-center text-center w-full relative">
@@ -84,7 +84,7 @@ const Gallery: React.FC = () => {
                                 }}
                                 src={nft.image}
                                 alt=""
-                                className="w-54 h-auto object-contain"
+                                className="w-58 h-auto object-contain"
                                 style={{
                                     zIndex: 0,
                                     opacity: 0,
@@ -101,18 +101,18 @@ const Gallery: React.FC = () => {
                 </h1>
 
                 {/* Scroll Arrow - Triangle with Tailwind */}
-                <button
+                {/* <button
                     onClick={scrollToGrid}
                     className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 animate-bounce hover:scale-110 transition-all"
                     aria-label="Scroll to gallery"
                 >
                     <div className="w-80 h-10 border-l-[30px] border-l-transparent border-r-[30px] border-r-transparent border-t-[40px] border-t-purple-600 hover:border-t-purple-700 transition-colors" />
-                </button>
+                </button> */}
             </div>
 
             <div
-                ref={gridRef}
-                className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 px-4 pb-8 "
+                // ref={gridRef}
+                className="w-full min-h-[calc(100vh-56px)] sm:min-h-[calc(100vh-64px)] lg:min-h-[calc(100vh-80px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 px-4 pb-8 "
             >
                 {nftData.map(nft => (
                     <NftCard key={nft.tokenId} {...nft} onClick={tokenId => dispatch(setSelectedNft(tokenId))} />
