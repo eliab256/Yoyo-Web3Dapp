@@ -1,6 +1,7 @@
 import useCurrentAuction from '../../hooks/useCurrentAuction';
 import useEthereumPrice from '../../hooks/useEthereumPrice';
 import useUserBidStatus from '../../hooks/useUserBidStatus';
+import useCurrentDutchAuctionPrice from '../../hooks/useCurrentDutchAuctionPrice';
 import NftCard from '../nft/NftCard';
 import CountDown from '../auction/CountDown';
 import BidResume from '../auction/BidResume';
@@ -26,6 +27,8 @@ const CurrentAuction: React.FC = () => {
     } = useUserBidStatus(address, auction?.auctionId.toString());
     const [bidValue, setBidValue] = useState<string>('');
     const openConfirmPanel = useSelector(selectIsConfirmBidPanelOpen);
+    const { currentPrice: currentDutchAuctionPrice, isLoading: isDutchAuctionPriceLoading } =
+        useCurrentDutchAuctionPrice();
 
     const getUsdPrice = useMemo(() => {
         return (ethAmount: bigint | undefined) => {
@@ -62,9 +65,9 @@ const CurrentAuction: React.FC = () => {
                 : 0;
         } else {
             // Dutch auction: current price
-            return auction.higherBid ? parseFloat(formatEther(auction.higherBid)) : 0;
+            return currentDutchAuctionPrice ? parseFloat(formatEther(currentDutchAuctionPrice)) : 0;
         }
-    }, [auction]);
+    }, [auction, currentDutchAuctionPrice]);
 
     // Check if the entered bid is valid
     const isBidValid = useMemo(() => {
@@ -93,7 +96,7 @@ const CurrentAuction: React.FC = () => {
     } = auction || {};
 
     // Loading State
-    if (isLoading || isUserBidStatusLoading) {
+    if (isLoading || isUserBidStatusLoading || isDutchAuctionPriceLoading) {
         return (
             <div className="w-full flex flex-col items-center px-2 sm:px-4 lg:min-h-[calc(100vh-var(--headerAndFooterHeight)*2)]">
                 <h1 className="text-center">Current Auction</h1>
@@ -132,7 +135,7 @@ const CurrentAuction: React.FC = () => {
     return (
         <div className="w-full flex flex-col items-center px-2 sm:px-4 lg:min-h-[calc(100vh-var(--headerAndFooterHeight)*2)]">
             <h1 className="text-center">Current Auction</h1>
-            <h2 className="text-center">Auction ID: {auctionId}</h2>
+            <h2 className="text-center">Auction ID: {Number(auctionId)}</h2>
             <div className="flex flex-col lg:flex-row items-center justify-center mt-1 w-full max-w-6xl ">
                 <div className="mb-4 lg:mb-0 lg:mr-8 p-1">
                     <NftCard tokenId={Number(tokenId)} />
@@ -210,7 +213,8 @@ const CurrentAuction: React.FC = () => {
                             <div className="flex justify-between items-center">
                                 <span className="font-semibold">Current Price:</span>
                                 <span className="text-lg font-bold text-blue-600">
-                                    {higherBid ? formatEther(higherBid) : '0'} ETH ≈ ${getUsdPrice(higherBid)}
+                                    {currentDutchAuctionPrice ? formatEther(currentDutchAuctionPrice) : '0'} ETH ≈ $
+                                    {getUsdPrice(currentDutchAuctionPrice)}
                                 </span>
                             </div>
                         )}
@@ -232,8 +236,8 @@ const CurrentAuction: React.FC = () => {
                                         ? higherBid && minimumBidChangeAmount
                                             ? `${formatEther(higherBid + minimumBidChangeAmount)} ETH`
                                             : '0 ETH'
-                                        : higherBid
-                                          ? `${formatEther(higherBid)} ETH`
+                                        : currentDutchAuctionPrice
+                                          ? `${formatEther(currentDutchAuctionPrice)} ETH`
                                           : '0 ETH'
                                 }
                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
