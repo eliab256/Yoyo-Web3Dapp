@@ -65,73 +65,74 @@ Each NFT has its own dedicated page where all details can be explored and, if th
 
 ## 2.1. Initialize React Project
 
-    1- Clone the repository
+1- Clone the repository
 
-    ```
-    git clone https://github.com/eliab256/Yoyo-Web3Dapp.git
-    ```
+```
+git clone https://github.com/eliab256/Yoyo-Web3Dapp.git
+```
 
-    2- Navigate to the project folder
+2- Navigate to the project folder
 
-    ```
-    cd Yoyo-Web3Dapp
-    ```
+```
+cd Yoyo-Web3Dapp
+```
 
-    3- Install the dependencies
+3- Install the dependencies
 
-    ```
-    npm install
-    ```
+```
+npm install
+```
 
-    4- Set up your local env file (explained later)
+4- Set up your local env file (explained later)
 
-    5- Run your local development server
+5- Run your local development server
 
-    ```
-    npm run dev
-    ```
+```
+npm run dev
+```
 
 ## 2.2. Initialize Foundry Project
 
-    1- Once the repository has been cloned, navigate to the foundry folder
+1- Once the repository has been cloned, navigate to the foundry folder
 
-    ```
-    cd foundry
-    ```
+```
+cd foundry
+```
 
-    2- Install foundry
-    ```
-    curl -L https://foundry.paradigm.xyz | bash
-    foundryup
-    ```
+2- Install foundry
 
-    3- Install dependencies
-    ```
-    forge install
-    ```
+```
+curl -L https://foundry.paradigm.xyz | bash
+foundryup
+```
 
-    4- Build the project
-    ```
-    forge build
-    ```
+3- Install dependencies
 
-    5- Run the test suite
-    ```
-    forge test
-    ```
+```
+forge install
+```
 
-    6- (optional) Take a look at the Makefile to try out some simplified commands
+4- Build the project
+
+```
+forge build
+```
+
+5- Run the test suite
+
+```
+forge test
+```
+
+6- (optional) Take a look at the Makefile to try out some simplified commands
 
 ## 2.3. Local Environment Variables
 
-The project uses three different `.env` files.
+The project uses two different `.env` files.
 Each `.env` file has a corresponding `example.env` file to simplify environment configuration.
 
 **Foundry `.env`**
 The first `.env` file is located in the **Foundry** directory and is used to run tests on **Sepolia network forks**.
-
-**yoyoIndexer `.env`**
-The second `.env` file is located inside the **yoyoIndexer** directory and is used to configure the **PostgreSQL database** for reading and indexing on-chain events.
 
 **Root `.env`**
 The third `.env` file is located in the **project root** and contains the following configuration values:
@@ -287,11 +288,15 @@ root/
 │   └── vite-env.d.ts           # Vite environment type definitions
 │
 ├── yoyoIndexer/                # Rindexer and graphql settings folder
-│   ├── abis/                   # Contracts abis on json format
-│   ├── .env                    # Environment variables for indexer
+│   ├── rindexer/
+│   │   ├── YoyoNft.abi.json        # Nft contract abi on json format
+│   │   ├── YoyoAuction.abi.json    # Auction contract abi on json format
+│   │   └── rindexer.yaml           # rindexer settings
 │   ├── .gitignore              # Git ignore rules
 │   ├── docker-compose.yml      # docker settings
-│   └── rindexer.yaml           # rindexer settings
+│   ├── Dockerfile              # docker settings for railway
+│   ├── railway.toml            # railway toml
+│   └── readme.md               # insruction for railway deploy
 │
 ├── public/                     # Public static files
 ├── node_modules/               # Dependencies
