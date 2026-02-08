@@ -6,9 +6,9 @@ interface WarningBoxProps {
 const WarningBox: React.FC<WarningBoxProps> = ({ title, message }) => {
     return (
         <>
-            <div className="absolute inset-0 bg-black/20"></div>
+            <div className="absolute inset-0 bg-black/20 "></div>
             <div
-                className="relative border-yellow-500 border-2 bg-white rounded-2xl shadow-lg p-6 w-full max-w-md text-center"
+                className="relative border-yellow-500 border-2 bg-white rounded-2xl shadow-lg p-6 w-full max-w-md text-center m-4"
                 onClick={e => e.stopPropagation()}
             >
                 <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">

@@ -19,7 +19,7 @@ const ErrorBox: React.FC<ErrorBoxProps> = ({ title, displayMessage, errorMessage
         return (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20" onClick={onClose}>
                 <div className="relative animate-pulse" onClick={e => e.stopPropagation()}>
-                    <div className="border-red-500 border-2 bg-white rounded-2xl shadow-lg p-6 w-full max-w-md text-center">
+                    <div className="border-red-500 border-2 bg-white rounded-2xl shadow-lg p-6 w-full max-w-md text-center m-4">
                         {/* Close Button */}
                         <button
                             className="absolute top-3 right-3 bg-red-500 rounded-full active:scale-95 active:bg-red-600 
@@ -40,7 +40,7 @@ const ErrorBox: React.FC<ErrorBoxProps> = ({ title, displayMessage, errorMessage
     // When onClose is not provided, render a simple box
     return (
         <div className="mx-auto my-8 max-w-md px-4">
-            <div className="relative border-red-500 border-2 bg-white rounded-2xl shadow-lg p-6 text-center animate-pulse">
+            <div className="relative border-red-500 border-2 bg-white rounded-2xl shadow-lg p-6 text-center animate-pulse m-4">
                 <h2 className="text-2xl md:text-3xl font-semibold text-red-700 mb-2">{title}</h2>
                 <p className="text-lg text-red-600">{messageToDisplay}</p>
             </div>
