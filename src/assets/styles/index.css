@@ -11,7 +11,13 @@
     --thirdGreen: rgb(120, 180, 150);
 
     /* Misure*/
-    --headerAndFooterHeight: 3.5rem;
+    --headerAndFooterHeight: 4.5rem;
+}
+
+@media (min-width: 1024px) {
+    :root {
+        --headerAndFooterHeight: 3.5rem;
+    }
 }
 
 @layer base {

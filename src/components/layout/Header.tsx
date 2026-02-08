@@ -13,7 +13,7 @@ const Header: React.FC = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const handleLogoClick = () => {
-        // Su mobile toggle del menu, su desktop vai alla gallery
+        // On mobile, toggle the menu instead of navigating to gallery directly
         const isMobile = window.innerWidth < 640;
         if (isMobile) {
             setIsMenuOpen(!isMenuOpen);
@@ -28,7 +28,7 @@ const Header: React.FC = () => {
     };
 
     return (
-        <header className="p-1 sm:p-2 h-[var(--headerAndFooterHeight)] flex justify-between fixed top-0 left-0 w-full shadow-md z-50 px-2 sm:px-4 bg-white">
+        <header className="p-1 sm:p-0 lg:p-2 h-[var(--headerAndFooterHeight)] flex justify-between fixed top-0 left-0 w-full shadow-md z-50 px-2 sm:px-4 bg-white">
             <div className="h-full flex items-center gap-0.5 sm:gap-1 relative">
                 <div
                     onClick={handleLogoClick}

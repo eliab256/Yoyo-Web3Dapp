@@ -186,10 +186,10 @@ const CurrentAuction: React.FC = () => {
     }
 
     return (
-        <div className="w-full flex flex-col items-center px-2 sm:px-4 lg:min-h-[calc(100vh-var(--headerAndFooterHeight)*2)]">
+        <div className="w-full flex flex-col items-center justify-center px-2 sm:px-4 lg:min-h-[calc(100vh-var(--headerAndFooterHeight)*2)]">
             <h1 className="text-center">Current Auction</h1>
             <h2 className="text-center">Auction ID: {Number(auctionId)}</h2>
-            <div className="flex flex-col lg:flex-row items-center justify-center mt-1 w-full max-w-6xl ">
+            <div className="flex flex-col lg:flex-row items-center justify-center mt-1 w-full max-w-6xl">
                 <div className="mb-4 lg:mb-0 lg:mr-8 p-1">
                     <NftCard tokenId={Number(tokenId)} />
                 </div>

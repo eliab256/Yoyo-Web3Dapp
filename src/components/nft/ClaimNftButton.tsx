@@ -21,7 +21,7 @@ const ClaimNftButton: React.FC = () => {
             <button
                 onClick={handleClick}
                 disabled={isWritePending || isConfirming}
-                className={`w-24 sm:w-auto px-4 py-1 h-10 rounded-2xl transition-all duration-200 text-xs sm:text-xs md:text-sm lg:text-base ${
+                className={`w-24 sm:w-auto px-4 py-1 lg:h-10 h-12 rounded-2xl transition-all duration-200 text-xs sm:text-xs md:text-sm lg:text-base ${
                     !isWritePending && !isConfirming
                         ? 'bg-[#825FAA] text-white hover:bg-[rgb(90,160,130)] active:shadow-[inset_0_4px_8px_rgba(0,0,0,0.3)] cursor-pointer'
                         : 'bg-gray-300 text-gray-500 cursor-not-allowed'
