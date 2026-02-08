@@ -1,11 +1,13 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { RootState,  } from './store';
+import type { RootState } from './store';
 
 interface ConfirmPlaceBidState {
     isConfirmBidPanelOpen: boolean;
     alreadyHigherBidder: boolean;
     insufficientBalance: boolean;
     hasUnclaimedTokens: boolean;
+    dismissedSuccessHash: string | null;
+    dismissedErrorTimestamp: number | null;
 }
 
 const initialState: ConfirmPlaceBidState = {
@@ -13,6 +15,8 @@ const initialState: ConfirmPlaceBidState = {
     alreadyHigherBidder: false,
     insufficientBalance: false,
     hasUnclaimedTokens: false,
+    dismissedSuccessHash: null,
+    dismissedErrorTimestamp: null,
 };
 
 export const confirmPlaceBidSlice = createSlice({
@@ -31,6 +35,12 @@ export const confirmPlaceBidSlice = createSlice({
         setHasUnclaimedTokens: (state, action: PayloadAction<boolean>) => {
             state.hasUnclaimedTokens = action.payload;
         },
+        dismissSuccessBox: (state, action: PayloadAction<string>) => {
+            state.dismissedSuccessHash = action.payload;
+        },
+        dismissErrorBox: state => {
+            state.dismissedErrorTimestamp = Date.now();
+        },
         resetConfirmPlaceBid: () => initialState,
     },
 });
@@ -41,6 +51,8 @@ export const {
     setAlreadyHigherBidder,
     setInsufficientBalance,
     setHasUnclaimedTokens,
+    dismissSuccessBox,
+    dismissErrorBox,
     resetConfirmPlaceBid,
 } = confirmPlaceBidSlice.actions;
 
@@ -49,6 +61,8 @@ export const selectIsConfirmBidPanelOpen = (state: RootState) => state.confirmPl
 export const selectAlreadyHigherBidder = (state: RootState) => state.confirmPlaceBid.alreadyHigherBidder;
 export const selectInsufficientBalance = (state: RootState) => state.confirmPlaceBid.insufficientBalance;
 export const selectHasUnclaimedTokens = (state: RootState) => state.confirmPlaceBid.hasUnclaimedTokens;
+export const selectDismissedSuccessHash = (state: RootState) => state.confirmPlaceBid.dismissedSuccessHash;
+export const selectDismissedErrorTimestamp = (state: RootState) => state.confirmPlaceBid.dismissedErrorTimestamp;
 export const selectConfirmPlaceBid = (state: RootState) => state.confirmPlaceBid;
 
 //Reducer

@@ -8,19 +8,19 @@ import {
     selectConfirmPlaceBid,
 } from '../../redux/confirmPlaceBidSlice';
 import useCurrentAuction from '../../hooks/useCurrentAuction';
-import usePlaceBid from '../../hooks/usePlaceBid';
 import { useEffect } from 'react';
 import { useBalance, useAccount } from 'wagmi';
 import BidStatusCheck from '../auction/BidStatusCheck';
-import ErrorBox from '../ui/ErrorBox';
-import SuccessBox from '../ui/SuccessBox';
-import  useClaimNft  from '../../hooks/useClaimNft';
+import useClaimNft from '../../hooks/useClaimNft';
 
 interface BidResumeProps {
     bidAmount: string;
+    placeBid: (bidAmount: string, auctionId: bigint) => void;
+    isWritePending: boolean;
+    isConfirming: boolean;
 }
 
-const BidResume: React.FC<BidResumeProps> = ({ bidAmount }) => {
+const BidResume: React.FC<BidResumeProps> = ({ bidAmount, placeBid, isWritePending, isConfirming }) => {
     const dispatch = useDispatch();
     const { address } = useAccount();
     const { data: balanceData, isLoading: isBalanceLoading } = useBalance({
@@ -29,10 +29,9 @@ const BidResume: React.FC<BidResumeProps> = ({ bidAmount }) => {
     });
     const { auction, isLoading } = useCurrentAuction();
     const { insufficientBalance, alreadyHigherBidder, hasUnclaimedTokens } = useSelector(selectConfirmPlaceBid);
-    const { placeBid, isWritePending, isConfirming, isConfirmed, hash, error } = usePlaceBid();
     const { unclaimedNftId } = useClaimNft();
 
-    const { higherBidder, higherBid } = auction || {};
+    const { higherBidder, higherBid, auctionType } = auction || {};
 
     useEffect(() => {
         const bidPlacedInWei: bigint = BigInt(Math.floor(parseFloat(bidAmount) * 1e18));
@@ -52,8 +51,8 @@ const BidResume: React.FC<BidResumeProps> = ({ bidAmount }) => {
             dispatch(setAlreadyHigherBidder(true));
         }
 
-        //mannca il check per gli unclaimed tokens
-        const hasUnclaimedToken: boolean = unclaimedNftId !== null; 
+        //check if user has unclaimed tokens
+        const hasUnclaimedToken: boolean = unclaimedNftId !== null;
         if (hasUnclaimedToken) {
             dispatch(setHasUnclaimedTokens(true));
         }
@@ -65,30 +64,6 @@ const BidResume: React.FC<BidResumeProps> = ({ bidAmount }) => {
     };
 
     const canConfirmBid = !insufficientBalance && !alreadyHigherBidder && !hasUnclaimedTokens;
-
-    //if transaction is confirmed show success box
-    if (isConfirmed && hash) {
-        return (
-            <SuccessBox
-                title="Bid Placed Successfully!"
-                message="Your bid has been successfully placed on the blockchain."
-                txHash={hash}
-                onClose={() => dispatch(resetConfirmPlaceBid())}
-            />
-        );
-    }
-
-    // if there is an error show warning box
-    if (error) {
-        return (
-            <ErrorBox
-                title="Bid Placement Failed"
-                errorMessage={error}
-                onClose={() => dispatch(resetConfirmPlaceBid())}
-            />
-        );
-        
-    }
 
     //otherwise show modal with bid resume
     return (
@@ -115,10 +90,12 @@ const BidResume: React.FC<BidResumeProps> = ({ bidAmount }) => {
                                 <p className="text-lg mb-2">
                                     <span className="font-semibold">Your Bid:</span> {bidAmount} ETH
                                 </p>
-                                <p className="text-lg">
-                                    <span className="font-semibold">Current Highest Bid:</span>{' '}
-                                    {higherBid ? (Number(higherBid) / 1e18).toFixed(4) : '0'} ETH
-                                </p>
+                                {auctionType === 0 && (
+                                    <p className="text-lg">
+                                        <span className="font-semibold">Current Highest Bid:</span>{' '}
+                                        {higherBid ? (Number(higherBid) / 1e18).toFixed(4) : '0'} ETH
+                                    </p>
+                                )}
                             </div>
 
                             {/* Status Checks */}

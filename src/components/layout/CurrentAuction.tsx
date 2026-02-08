@@ -2,15 +2,24 @@ import useCurrentAuction from '../../hooks/useCurrentAuction';
 import useEthereumPrice from '../../hooks/useEthereumPrice';
 import useUserBidStatus from '../../hooks/useUserBidStatus';
 import useCurrentDutchAuctionPrice from '../../hooks/useCurrentDutchAuctionPrice';
+import usePlaceBid from '../../hooks/usePlaceBid';
 import NftCard from '../nft/NftCard';
 import CountDown from '../auction/CountDown';
 import BidResume from '../auction/BidResume';
 import { formatEther } from 'viem';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setIsConfirmBidPanelOpen, selectIsConfirmBidPanelOpen } from '../../redux/confirmPlaceBidSlice';
+import {
+    setIsConfirmBidPanelOpen,
+    selectIsConfirmBidPanelOpen,
+    dismissSuccessBox,
+    dismissErrorBox,
+    selectDismissedSuccessHash,
+    selectDismissedErrorTimestamp,
+} from '../../redux/confirmPlaceBidSlice';
 import { useAccount } from 'wagmi';
 import ErrorBox from '../ui/ErrorBox';
+import SuccessBox from '../ui/SuccessBox';
 import LoadingBox from '../ui/LoadingBox';
 import WarningBox from '../ui/WarningBox';
 
@@ -27,8 +36,23 @@ const CurrentAuction: React.FC = () => {
     } = useUserBidStatus(address, auction?.auctionId.toString());
     const [bidValue, setBidValue] = useState<string>('');
     const openConfirmPanel = useSelector(selectIsConfirmBidPanelOpen);
+    const dismissedSuccessHash = useSelector(selectDismissedSuccessHash);
+    const dismissedErrorTimestamp = useSelector(selectDismissedErrorTimestamp);
     const { currentPrice: currentDutchAuctionPrice, isLoading: isDutchAuctionPriceLoading } =
         useCurrentDutchAuctionPrice();
+    const { placeBid, isWritePending, isConfirming, isConfirmed, hash, error: placeBidError } = usePlaceBid();
+
+    // Determina se mostrare i box basandosi su Redux
+    const shouldShowSuccessBox = isConfirmed && hash && hash !== dismissedSuccessHash;
+    const shouldShowErrorBox =
+        placeBidError && (!dismissedErrorTimestamp || Date.now() - dismissedErrorTimestamp > 100);
+
+    // useEffect per chiudere il pannello quando la transazione è completata
+    useEffect(() => {
+        if (shouldShowSuccessBox || shouldShowErrorBox) {
+            dispatch(setIsConfirmBidPanelOpen(false));
+        }
+    }, [shouldShowSuccessBox, shouldShowErrorBox, dispatch]);
 
     const getUsdPrice = useMemo(() => {
         return (ethAmount: bigint | undefined) => {
@@ -95,6 +119,34 @@ const CurrentAuction: React.FC = () => {
         minimumBidChangeAmount,
     } = auction || {};
 
+    // Success State - Bid Placed (priorità massima per evitare che venga nascosto)
+    if (shouldShowSuccessBox && hash) {
+        return (
+            <SuccessBox
+                title="Bid Placed Successfully!"
+                message="Your bid has been successfully placed on the blockchain."
+                txHash={hash}
+                onClose={() => {
+                    dispatch(dismissSuccessBox(hash));
+                }}
+            />
+        );
+    }
+
+    // Error State - Bid Placement (priorità alta)
+    if (shouldShowErrorBox && placeBidError) {
+        return (
+            <ErrorBox
+                title="Bid Placement Failed"
+                displayMessage="There was an error placing your bid. Check console for more details or try again later."
+                errorMessage={placeBidError.message}
+                onClose={() => {
+                    dispatch(dismissErrorBox());
+                }}
+            />
+        );
+    }
+
     // Loading State
     if (isLoading || isUserBidStatusLoading || isDutchAuctionPriceLoading) {
         return (
@@ -109,13 +161,14 @@ const CurrentAuction: React.FC = () => {
         );
     }
 
-    // Error State
+    // Error State - Bid Status
     if (userBidStatusError) {
         return (
-            <div className="w-full flex flex-col items-center px-2 sm:px-4 lg:min-h-[calc(100vh-var(--headerAndFooterHeight)*2)]">
-                <h1 className="text-center">Current Auction</h1>
-                <ErrorBox title="Error Loading Bid Status" errorMessage={userBidStatusError} />
-            </div>
+            <ErrorBox
+                title="Error Loading Bid Status"
+                displayMessage="Bid status loading failed, check console for more details"
+                errorMessage={userBidStatusError}
+            />
         );
     }
 
@@ -255,7 +308,14 @@ const CurrentAuction: React.FC = () => {
                 </div>
             </div>
             <CountDown startTime={startTime} endTime={endTime} />
-            {openConfirmPanel && <BidResume bidAmount={bidValue} />}
+            {openConfirmPanel && (
+                <BidResume
+                    bidAmount={bidValue}
+                    placeBid={placeBid}
+                    isWritePending={isWritePending}
+                    isConfirming={isConfirming}
+                />
+            )}
         </div>
     );
 };
