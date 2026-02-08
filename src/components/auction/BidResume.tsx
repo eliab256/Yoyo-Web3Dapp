@@ -75,7 +75,7 @@ const BidResume: React.FC<BidResumeProps> = ({ bidAmount, placeBid, isWritePendi
                 <div className="absolute inset-0 bg-black/50"></div>
 
                 <div
-                    className="relative w-1/2 max-h-[80vh] bg-white rounded-lg shadow-2xl p-6 overflow-y-auto"
+                    className="relative w-[95%] sm:w-[85%] md:w-3/4 lg:w-1/2 max-h-[80vh] bg-white rounded-lg shadow-2xl p-4 sm:p-5 md:p-6 overflow-y-auto"
                     onClick={e => e.stopPropagation()}
                 >
                     <h2 className="text-center mb-4">Bid Resume</h2>
