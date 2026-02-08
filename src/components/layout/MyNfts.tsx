@@ -38,7 +38,7 @@ const MyNfts: React.FC = () => {
     // Wallet is not connected
     if (!isConnected) {
         return (
-            <div className="w-full lg:min-h-[calc(100vh-var(--headerAndFooterHeight)*2)]">
+            <div className="w-full">
                 <div className="px-2 sm:px-4 text-center">
                     <h1>My Nfts</h1>
                 </div>
@@ -54,7 +54,7 @@ const MyNfts: React.FC = () => {
     // Loading state
     if (isConnected && isLoading) {
         return (
-            <div className="w-full lg:min-h-[calc(100vh-var(--headerAndFooterHeight)*2)]">
+            <div className="w-full">
                 <div className="px-2 sm:px-4 text-center">
                     <h1>My Nfts</h1>
                 </div>
@@ -67,7 +67,7 @@ const MyNfts: React.FC = () => {
     // Error state
     if (isConnected && error && !isLoading) {
         return (
-            <div className="w-full lg:min-h-[calc(100vh-var(--headerAndFooterHeight)*2)]">
+            <div className="w-full">
                 <div className="px-2 sm:px-4 text-center">
                     <h1>My Nfts</h1>
                 </div>
@@ -77,7 +77,7 @@ const MyNfts: React.FC = () => {
     }
 
     return (
-        <div className="w-full lg:min-h-[calc(100vh-var(--headerAndFooterHeight)*2)]">
+        <div className="w-full">
             <div className="px-2 sm:px-4 text-center">
                 <h1>My Nfts</h1>
             </div>

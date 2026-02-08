@@ -18,11 +18,11 @@ function App() {
     };
 
     return (
-        <>
+        <div className="flex flex-col h-full w-full">
             <Header />
-            <main className="relative w-full">{pageComponents[currentOpenPage]}</main>
+            <main className="relative w-full flex-1">{pageComponents[currentOpenPage]}</main>
             <Footer />
-        </>
+        </div>
     );
 }
 

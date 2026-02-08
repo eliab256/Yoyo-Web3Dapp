@@ -40,12 +40,12 @@
     }
 
     #root {
-        @apply w-full;
+        @apply w-full h-full flex flex-col;
     }
 
     main {
         @apply flex flex-1 mt-[var(--headerAndFooterHeight)] w-full p-2;
-        min-height: calc(100vh - (2 * var(--headerAndFooterHeight)));
+        min-height: calc(100vh - (2 * var(--headerAndFooterHeight)) - 1rem);
     }
 
     h1,

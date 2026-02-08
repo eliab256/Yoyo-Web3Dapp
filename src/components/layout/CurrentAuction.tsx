@@ -186,7 +186,7 @@ const CurrentAuction: React.FC = () => {
     }
 
     return (
-        <div className="w-full flex flex-col items-center justify-center px-2 sm:px-4 lg:min-h-[calc(100vh-var(--headerAndFooterHeight)*2)]">
+        <div className="w-full flex flex-col items-center justify-center px-2 sm:px-4">
             <h1 className="text-center">Current Auction</h1>
             <h2 className="text-center">Auction ID: {Number(auctionId)}</h2>
             <div className="flex flex-col lg:flex-row items-center justify-center mt-1 w-full max-w-6xl">
