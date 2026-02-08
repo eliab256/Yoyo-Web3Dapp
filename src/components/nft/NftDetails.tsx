@@ -45,8 +45,8 @@ const NftDetails: React.FC<NftData> = ({ tokenId, metadata, image }) => {
     return (
         <div
             className="relative flex flex-col items-center rounded-xl bg-white/95 backdrop-blur-sm
-            p-2 sm:p-3 md:p-4 lg:p-10 w-[95%] sm:w-[90%] md:w-4/5 lg:w-1/2 mx-auto my-3 sm:my-4 md:my-5 lg:my-6
-            border border-gray-300 shadow-lg min-h-[calc(100vh-48px)] max-h-[100vh] overflow-y-auto cursor-default"
+            p-2 sm:p-3 md:p-4 lg:p-10 w-[95%] sm:w-[90%] md:w-4/5 lg:w-1/2 mx-auto my-3 sm:my-4 md:my-5 lg:my-2
+            border border-gray-300 shadow-lg max-h-[100vh] overflow-y-auto cursor-default"
         >
             {/* Close Button */}
             <div
@@ -79,7 +79,7 @@ const NftDetails: React.FC<NftData> = ({ tokenId, metadata, image }) => {
             {/* Properties Section */}
             <div className="w-full px-4 sm:px-6 md:px-8 mb-4">
                 <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-3 text-gray-800">Course Properties</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                     {/* Category */}
                     <div className="bg-blue-50 rounded-lg p-1 border border-blue-200 ">
                         <p className="text-sm text-blue-600 font-semibold mb-1">Category</p>
@@ -121,7 +121,7 @@ const NftDetails: React.FC<NftData> = ({ tokenId, metadata, image }) => {
             {/* Attributes Section */}
             <div className="w-full px-4 sm:px-6 md:px-8 mb-4">
                 <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-3 text-gray-800">Attributes</h3>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 gap-3">
                     {attributes.map((attr, index) => (
                         <div
                             key={index}

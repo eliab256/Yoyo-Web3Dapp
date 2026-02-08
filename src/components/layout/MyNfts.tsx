@@ -107,7 +107,7 @@ const MyNfts: React.FC = () => {
             </div>
 
             {currentNftSelected !== null && selectedNft && (
-                <div className="fixed inset-0 z-50 flex justify-center items-center">
+                <div className="fixed inset-0 z-50 flex justify-center items-start pt-1 ">
                     <NftDetails {...selectedNft} />
                 </div>
             )}
