@@ -13,7 +13,7 @@ import NftDetails from '../nft/NftDetails';
 const MyNfts: React.FC = () => {
     const dispatch = useDispatch();
     const { isConnected, address } = useAccount();
-    const { data: nfts, isLoading, error } = useUserNFTs();
+    const { data: nfts, isLoading, error, refetch } = useUserNFTs();
 
     const currentNftSelected = useSelector(selectSelectedNftId);
     const selectedNft: NftData | undefined = nftData.find(nft => nft.tokenId === currentNftSelected);
@@ -23,11 +23,13 @@ const MyNfts: React.FC = () => {
             document.body.classList.add('overflow-hidden');
         } else {
             document.body.classList.remove('overflow-hidden');
+            // Refetch NFTs when the selected NFT is cleared (used to trigger refetch after transfer)
+            refetch();
         }
         return () => {
             document.body.classList.remove('overflow-hidden');
         };
-    }, [currentNftSelected]);
+    }, [currentNftSelected, refetch]);
 
     // Extract tokenIds from nfts
     const tokenIds = nfts?.map(nft => nft.tokenId) ?? [];
@@ -41,7 +43,10 @@ const MyNfts: React.FC = () => {
                     <h1>My Nfts</h1>
                 </div>
 
-                <ErrorBox title="Wallet not connected" displayMessage="Please connect your wallet to view your products." />
+                <ErrorBox
+                    title="Wallet not connected"
+                    displayMessage="Please connect your wallet to view your products."
+                />
             </div>
         );
     }
@@ -54,22 +59,19 @@ const MyNfts: React.FC = () => {
                     <h1>My Nfts</h1>
                 </div>
 
-                <LoadingBox
-                    title="Loading your NFTs..."
-                    message="Please wait while we fetch your collection."
-                />
+                <LoadingBox title="Loading your NFTs..." message="Please wait while we fetch your collection." />
             </div>
         );
     }
 
     // Error state
-    if(isConnected && error && !isLoading) {
+    if (isConnected && error && !isLoading) {
         return (
             <div className="w-full lg:min-h-[calc(100vh-var(--headerAndFooterHeight)*2)]">
                 <div className="px-2 sm:px-4 text-center">
                     <h1>My Nfts</h1>
                 </div>
-                 <ErrorBox title="Error loading NFTs" errorMessage={error} />
+                <ErrorBox title="Error loading NFTs" errorMessage={error} />
             </div>
         );
     }
@@ -89,7 +91,7 @@ const MyNfts: React.FC = () => {
                 )}
                 {/* wallet is connected and the user has bought products */}
                 {isConnected && hasNfts && (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-4 py-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-12 py-6">
                         {tokenIds.map(tokenId => {
                             const nftCardData = nftData.find(nft => nft.tokenId === Number(tokenId));
                             return nftCardData ? (

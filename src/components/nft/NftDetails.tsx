@@ -215,13 +215,17 @@ const NftDetails: React.FC<NftData> = ({ tokenId, metadata, image }) => {
                     title="NFT Transferred Successfully!"
                     message="Your NFT has been successfully transferred on the blockchain."
                     txHash={hash}
-                    onClose={() => window.location.reload()}
+                    onClose={() => dispatch(clearSelectedNft())}
                 />
             )}
 
             {/* Warning Box when there is an error */}
             {error && !isWritePending && !isConfirming && (
-                <ErrorBox title="Transfer NFT Failed" errorMessage={error} onClose={() => window.location.reload()} />
+                <ErrorBox
+                    title="Transfer NFT Failed"
+                    errorMessage={error}
+                    onClose={() => dispatch(clearSelectedNft())}
+                />
             )}
         </div>
     );
