@@ -19,36 +19,38 @@
 - [Index](#index)
 - [1. About The Project](#1-about-the-project)
 - [2. Clone and Configuration](#2-clone-and-configuration)
-  - [2.1. Initialize React Project](#21-initialize-react-project)
-  - [2.2. Initialize Foundry Project](#22-initialize-foundry-project)
-  - [2.3. Local Environment Variables](#23-local-environment-variables)
+    - [2.1. Initialize React Project](#21-initialize-react-project)
+    - [2.2. Initialize Foundry Project](#22-initialize-foundry-project)
+    - [2.3. Local Environment Variables](#23-local-environment-variables)
 - [3. Smart Contracts](#3-smart-contracts)
-  - [3.1. Smart Contracts Details](#31-smart-contracts-details)
-  - [3.2. Read From Smart Contracts](#32-read-from-smart-contracts)
-  - [3.3. Write on Smart Contracts](#33-write-on-smart-contracts)
+    - [3.1. Smart Contracts Details](#31-smart-contracts-details)
+    - [3.2. Read From Smart Contracts](#32-read-from-smart-contracts)
+    - [3.3. Write on Smart Contracts](#33-write-on-smart-contracts)
 - [4. Event Indexing](#4-event-indexing)
-  - [4.1. Rindexer with GraphQL](#41-rindexer-with-graphql)
-  - [4.2. Indexed Events](#42-indexed-events)
-  - [4.3. Queries](#43-queries)
+    - [4.1. Rindexer with GraphQL](#41-rindexer-with-graphql)
+    - [4.2. Indexed Events](#42-indexed-events)
+    - [4.3. Queries](#43-queries)
 - [5. Front End](#5-front-end)
-  - [5.1. Providers](#51-providers)
-  - [5.2. Wallet Connection](#52-wallet-connection)
-  - [5.3. App Structure](#53-app-structure)
-  - [5.4. Custom Hooks](#54-custom-hooks)
-    - [useClaimNft:](#useclaimnft)
-    - [useClaimRefund](#useclaimrefund)
-    - [useCurrentAuction](#usecurrentauction)
-    - [useEthereumPrice](#useethereumprice)
-    - [usePlaceBid](#useplacebid)
-    - [useTransferNft](#usetransfernft)
-    - [useUserNFTs](#useusernfts)
-  - [5.5. Redux For Global State](#55-redux-for-global-state)
-    - [Store Structure](#store-structure)
-    - [Example Slices](#example-slices)
-    - [Usage in Components](#usage-in-components)
+    - [5.1. Providers](#51-providers)
+    - [5.2. Wallet Connection](#52-wallet-connection)
+    - [5.3. App Structure](#53-app-structure)
+    - [5.4. Custom Hooks](#54-custom-hooks)
+        - [useClaimNft:](#useclaimnft)
+        - [useClaimRefund](#useclaimrefund)
+        - [useCurrentAuction](#usecurrentauction)
+        - [useCurrentDutchAuctionPrice](#usecurrentdutchauctionprice)
+        - [useEthereumPrice](#useethereumprice)
+        - [usePlaceBid](#useplacebid)
+        - [useTransferNft](#usetransfernft)
+        - [useUserNFTs](#useusernfts)
+    - [5.5. Redux For Global State](#55-redux-for-global-state)
+        - [Store Structure](#store-structure)
+        - [Example Slices](#example-slices)
+        - [Usage in Components](#usage-in-components)
 - [6. Performance, Gas Optimization And Security](#6-performance-gas-optimization-and-security)
-  - [6.1. Read Contract vs Read Events](#61-read-contract-vs-read-events)
-  - [6.2. Use Events To Trigger Read Contract](#62-use-events-to-trigger-read-contract)
+    - [6.1. Security Over Gas Efficiency: Immediate Refunds](#61-security-over-gas-efficiency-immediate-refunds)
+    - [6.2. Read Contract vs Read Events](#62-read-contract-vs-read-events)
+    - [6.3. Use Events To Trigger Read Contract](#63-use-events-to-trigger-read-contract)
 - [7. Further development](#7-further-development)
 - [8. Contacts](#8-contacts)
 - [9. Copyright](#9-copyright)
@@ -156,6 +158,17 @@ In the `src/contracts` folder you can find:
 
 **About `addresses.ts`:**
 This file exports an object where each key is a chain ID (e.g., 11155111 for Sepolia) and the value is an object with the addresses of the Yoyo NFT and Yoyo Auction contracts. This allows the app to dynamically select the correct contract addresses based on the connected network.
+
+**Important: Updating Contract Addresses After New Deployments**
+
+When deploying the smart contracts to a new network or redeploying on an existing network, you must update the contract addresses in **four locations**:
+
+1. **Frontend**: Update `src/contracts/addresses.ts` with the new YoyoNft and YoyoAuction contract addresses for the target chain ID.
+2. **Rindexer Configuration**: Update `yoyoIndexer/rindexer/rindexer.yaml` with the new contract addresses and their deployment block numbers to ensure proper event indexing from the correct starting point.
+3. **Foundry Documentation**: Update `foundry/README.md` with the new contract addresses and Etherscan verification links to keep the smart contract documentation up to date.
+4. **Environment Variables** (if applicable): If you're using environment variables for contract addresses, update them in your `.env` files.
+
+After updating these files, restart the indexer and redeploy the frontend to ensure all components are reading from the correct contract addresses. Failure to update all four locations may result in the app reading from outdated contracts or missing indexed events.
 
 ## 3.2. Read From Smart Contracts
 
@@ -335,6 +348,12 @@ Each hook is documented with a NatSpec comment describing its internal logic and
 - Fetches and monitors the current active auction data from the blockchain
 - Implements a hybrid approach balancing security and performance optimization
 
+### useCurrentDutchAuctionPrice
+
+- Fetches the current price of an active Dutch Auction from the smart contract
+- Implements automatic refetch when the user returns to the browser tab (throttled to once every 5 minutes)
+- Used exclusively for Dutch Auction types to display the dynamically decreasing price
+
 ### useEthereumPrice
 
 - Fetches the current Ethereum price in USD from CoinGecko API for display purposes only
@@ -383,9 +402,62 @@ By leveraging Redux Toolkit, the app achieves modular, maintainable, and testabl
 
 # 6. Performance, Gas Optimization And Security
 
-## 6.1. Read Contract vs Read Events
+Throughout the development of Yoyo Web3App, several architectural decisions were made to balance security, gas efficiency, and user experience. This section explains the key trade-offs and optimization strategies implemented in the project.
 
-## 6.2. Use Events To Trigger Read Contract
+## 6.1. Security Over Gas Efficiency: Immediate Refunds
+
+One of the core design principles in the YoYo auction smart contract is **prioritizing security over gas optimization** when it comes to handling user funds. In English auctions, when a user is outbid, their previous bid is **immediately refunded** rather than stored in the contract for later withdrawal.
+
+**Why Immediate Refunds?**
+
+- **Minimize Contract Balance**: Keeping minimal ETH locked in the contract reduces the attack surface and potential loss in case of a security breach or exploit.
+- **Eliminate Withdrawal Complexity**: Users don't need to remember to claim their refunds, reducing friction and improving user experience.
+- **Reduce Smart Contract Risk**: Storing large amounts of ETH in the contract increases the risk exposure; immediate refunds distribute funds back to users as soon as they are no longer needed.
+
+**The Trade-Off:**
+
+While immediate refunds increase gas costs for each bid transaction (since refunds are processed on-chain), this approach was chosen deliberately to **prioritize user safety and contract security** over marginal gas savings. In a security-critical application like an auction platform, protecting user funds takes precedence.
+
+## 6.2. Read Contract vs Read Events
+
+Interacting with the blockchain requires careful consideration of cost and performance. Reading data directly from smart contracts using RPC calls can be expensive and slow, especially when querying complex state or performing frequent updates. To optimize this, the Yoyo Web3App leverages **event indexing** as a first layer of data access before falling back to contract reads.
+
+**Event-Driven Architecture:**
+
+- Events emitted by the smart contract are indexed using **Rindexer** and exposed via a **GraphQL API**.
+- The frontend queries this indexed data for fast, low-cost access to auction history, bid records, NFT ownership, and other historical information.
+- Contract reads are reserved for **critical, real-time state validation** where the blockchain is the source of truth.
+
+**Benefits of Reading Events First:**
+
+1. **Performance**: GraphQL queries are significantly faster than RPC calls, providing near-instant data access.
+2. **Cost Efficiency**: Indexed events are free to query, while contract reads consume RPC resources and can incur rate limits.
+3. **Historical Data**: Events provide a complete history of contract interactions, enabling features like bid history and auction archives.
+
+**When to Read Contracts:**
+
+Direct contract reads are still necessary for:
+
+- Current auction state (active auction ID, highest bidder, current price)
+- User-specific on-chain balances and permissions
+- Data that requires absolute real-time accuracy and cannot tolerate indexer lag
+
+## 6.3. Use Events To Trigger Read Contract
+
+A key optimization pattern used throughout the Yoyo Web3App is **event-triggered contract reads**. Rather than continuously polling the blockchain for state changes, the frontend listens to indexed events and only performs contract reads when an event indicates that the state has changed.
+
+**How It Works:**
+
+1. **Monitor Events**: Custom hooks (like `useCurrentAuction`, `useUserBidStatus`) first query indexed events via GraphQL.
+2. **Detect State Changes**: Utility functions analyze events to determine if a relevant state change has occurred (e.g., a new bid was placed, an auction ended).
+3. **Conditional Contract Read**: Only when an event signals a change does the hook trigger a contract read to fetch the updated on-chain state.
+4. **Cache and Optimize**: Results are cached to avoid redundant reads, and refetch logic is throttled to prevent excessive RPC calls.
+
+**Benefits:**
+
+- **Reduced RPC Load**: Fewer contract reads mean lower costs and faster response times.
+- **Improved UX**: Users see updates quickly based on events, while contract reads confirm critical data when needed.
+- **Prevent Failed Transactions**: By querying events before write operations, the app can validate conditions (e.g., user has unclaimed tokens, insufficient balance) and **prevent transactions that would revert**, saving users from wasted gas fees.
 
 # 7. Further development
 
