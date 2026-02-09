@@ -6,7 +6,6 @@ foundry/cache/
 foundry/!/broadcast/
 foundry/broadcast/*/31337/
 foundry/broadcast/**/dry-run/
-foundry/lib/
 
 # Docs
 docs/
@@ -15,7 +14,6 @@ docs/
 .env.production
 .env.development
 /node_modules
-foundry/lib
 
 # Logs
 logs
