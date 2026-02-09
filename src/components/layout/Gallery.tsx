@@ -12,7 +12,7 @@ const Gallery: React.FC = () => {
     const currentNftSelected = useSelector(selectSelectedNftId);
     const selectedNft: NftData | undefined = nftData.find(nft => nft.tokenId === currentNftSelected);
     const imagesRef = useRef<(HTMLImageElement | null)[]>([]);
-    //const gridRef = useRef<HTMLDivElement>(null);
+    const gridRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const animateImages = () => {
@@ -30,7 +30,7 @@ const Gallery: React.FC = () => {
                             scale: 0.5,
                             x: randomX,
                             y: randomY,
-                            rotation: Math.random() * 180,
+                            rotation: 180,
                         },
                         {
                             opacity: 1,
@@ -63,16 +63,29 @@ const Gallery: React.FC = () => {
         };
     }, [currentNftSelected]);
 
-    // const scrollToGrid = () => {
-    //     gridRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    // };
+    const scrollToGrid = () => {
+        if (gridRef.current) {
+            const headerHeight =
+                parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--headerAndFooterHeight')) * 16;
+            const elementPosition = gridRef.current.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth',
+            });
+        }
+    };
 
     return (
         <div className="flex flex-col items-center text-center w-full relative">
-            <div className="flex items-center justify-center min-h-[calc(100vh-56px)] sm:min-h-[calc(100vh-64px)] lg:min-h-[calc(100vh-80px)] w-full px-2 sm:px-4 relative overflow-hidden ">
+            <div
+                className="flex items-center justify-center min-h-[calc(100vh-56px)] sm:min-h-[calc(100vh-64px)] lg:min-h-[calc(100vh-80px)] 
+                    w-full px-2 sm:px-4 relative overflow-hidden"
+            >
                 {/* Animated NFT images in the background */}
-                <div className="absolute inset-0 pointer-events-none grid grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-0 items-start justify-items-center ">
-                    {[...nftData.slice(0, 10), null, ...nftData.slice(10, 20)].map((nft, index) => {
+                <div className="absolute inset-0 pointer-events-none grid grid-cols-4 md:grid-cols-4 lg:grid-cols-7 gap-0 items-start justify-items-center ">
+                    {[...nftData.slice(0, 20)].map((nft, index) => {
                         if (nft === null) {
                             return <div key="empty-11" className="w-full h-auto"></div>;
                         }
@@ -95,24 +108,40 @@ const Gallery: React.FC = () => {
                 </div>
 
                 {/* Title */}
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold relative z-10">
-                    Yoga for Every Body,
-                    <br></br>Powered by Technology
-                </h1>
+                <div
+                    className="relative z-10 px-6 py-4 rounded-3xl bg-[#f5f5f5]/70"
+                    style={{
+                        boxShadow: '0 0 40px 20px rgba(245, 245, 245, 0.7)',
+                    }}
+                >
+                    <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold">
+                        Yoga for Every Body,
+                        <br></br>Powered by Technology
+                    </h1>
+                </div>
 
                 {/* Scroll Arrow - Triangle with Tailwind */}
-                {/* <button
+                <button
                     onClick={scrollToGrid}
-                    className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 animate-bounce hover:scale-110 transition-all"
+                    className="absolute bottom-2 left-1/2 -translate-x-1/2 z-10 animate-bounce hover:scale-110 transition-all flex flex-col items-center gap-1 cursor-pointer"
                     aria-label="Scroll to gallery"
                 >
-                    <div className="w-80 h-10 border-l-[30px] border-l-transparent border-r-[30px] border-r-transparent border-t-[40px] border-t-purple-600 hover:border-t-purple-700 transition-colors" />
-                </button> */}
+                    <span className="text-2xl sm:text-3xl font-semibold text-[var(--secondGreen)]">
+                        Click to visit NFT gallery
+                    </span>
+                    <svg className="w-10 h-10 text-[var(--secondGreen)]" fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                            fillRule="evenodd"
+                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                            clipRule="evenodd"
+                        />
+                    </svg>
+                </button>
             </div>
 
             <div
-                // ref={gridRef}
-                className="w-full min-h-[calc(100vh-56px)] sm:min-h-[calc(100vh-64px)] lg:min-h-[calc(100vh-80px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 px-4 pb-8 "
+                ref={gridRef}
+                className="w-full min-h-[calc(100vh-56px)] sm:min-h-[calc(100vh-64px)] lg:min-h-[calc(100vh-80px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 px-4 pb-8 pt-6"
             >
                 {nftData.map(nft => (
                     <NftCard key={nft.tokenId} {...nft} onClick={tokenId => dispatch(setSelectedNft(tokenId))} />
