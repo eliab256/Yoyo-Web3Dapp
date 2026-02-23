@@ -12,15 +12,6 @@ import { useState, useEffect } from 'react';
  * ensuring that multiple instances of this hook share the same data and don't trigger
  * redundant API calls.
  *
- * **10-Minute Cache Duration**: Cached prices remain valid for 10 minutes (600000ms).
- * Within this window, the hook immediately returns cached data without making API requests,
- * significantly reducing API load and preventing rate limiting issues.
- *
- * **Graceful Error Handling**: If the API call fails but a cached price exists, the hook
- * returns the cached price with an error message indicating cached data is being used.
- * This ensures the UI can still display pricing information even during API outages or
- * network issues.
- *
  * **CoinGecko API Integration**: Fetches data from the CoinGecko public API endpoint
  * for Ethereum price in USD. The endpoint is lightweight and returns only the necessary
  * pricing data.

@@ -17,18 +17,11 @@ import { useEffect } from 'react';
  * to Wei using `parseEther` before sending it to the contract. This ensures precise handling
  * of decimal values and prevents rounding errors.
  *
- * **Smart Contract Interaction**: Calls the `placeBidOnAuction` function on the YoyoAuction
- * contract, passing the auction ID as an argument and the bid amount as the transaction value.
- * The contract validates the bid amount, checks auction status, and processes the bid on-chain.
- *
  * **Automatic Cache Invalidation**: After a successful bid confirmation, the hook automatically
  * invalidates multiple queries to ensure the UI reflects the updated state:
  * - `readContract`: Refreshes the current auction data (new highest bid, bidder count, etc.)
  * - `auctionEvents`: Updates the indexer-based auction lifecycle monitoring
  * - `bidHistoryDetail`: Refreshes the user's personal bid history and status
- *
- * **Multi-Chain Support**: The hook is chain-aware and automatically uses the correct
- * contract address based on the currently connected network via `chainsToContractAddress`.
  *
  * **Transaction State Management**: Provides granular transaction states (pending, confirming,
  * confirmed) and error handling for both the write operation and confirmation phases, enabling

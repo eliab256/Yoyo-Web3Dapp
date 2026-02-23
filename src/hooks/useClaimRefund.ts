@@ -25,9 +25,6 @@ import getUnclaimedRefund from '../utils/unclaimedRefund';
  * a query that refetches when the window regains focus, ensuring the UI always reflects
  * the current refund status without requiring manual refreshes.
  *
- * **Multi-Chain Support**: The hook is chain-aware and automatically uses the correct
- * contract address based on the currently connected network via `chainsToContractAddress`.
- *
  * @used-in
  * - `ClaimFailedRefundButton.tsx` - Renders the claim refund button with transaction states
  *

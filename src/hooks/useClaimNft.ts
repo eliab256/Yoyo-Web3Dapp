@@ -26,9 +26,6 @@ import { useEffect } from 'react';
  * the hook automatically invalidates and refetches the failed mints query to update the UI
  * and prevent duplicate claims.
  *
- * **Multi-Chain Support**: The hook is chain-aware and automatically uses the correct
- * contract address based on the currently connected network via `chainsToContractAddress`.
- *
  * @used-in
  * - `ClaimNftButton.tsx` - Renders the claim button with transaction states
  * - `bidResume.tsx` - Displays unclaimed NFT information in the bid summary

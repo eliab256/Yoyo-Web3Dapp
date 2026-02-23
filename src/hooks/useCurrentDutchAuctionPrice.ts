@@ -11,10 +11,6 @@ import { useEffect, useRef } from 'react';
  * mechanism when the user returns to the browser tab, but only if at least 5 minutes
  * have passed since the last fetch to avoid excessive API calls.
  *
- * The hook uses wagmi's `useReadContract` to interact with the blockchain and React's
- * `useEffect` to listen for window focus events. The refetch is throttled using a
- * timestamp-based approach stored in a ref to prevent unnecessary contract reads.
- *
  * @return currentPrice The current auction price in wei (bigint), or undefined if not yet loaded
  * @return isLoading Boolean indicating whether the contract call is in progress
  *

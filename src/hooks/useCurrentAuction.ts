@@ -22,11 +22,6 @@ import getCurrentOpenAuction from '../utils/currentOpenAuction';
  * events (AuctionOpened/AuctionClosed) from the indexer database. When the indexed `auctionId`
  * changes, it triggers a refetch of the blockchain data.
  *
- * **Intelligent Polling**: The indexer monitoring uses adaptive intervals:
- * - Every 30 seconds when no auction is active
- * - Every 10 seconds when the auction is close to expiring (< 5 minutes remaining)
- * - Every 60 seconds during normal auction periods
- *
  * This approach minimizes unnecessary blockchain reads while maintaining security and ensuring
  * the UI stays up-to-date with auction state changes.
  * 
