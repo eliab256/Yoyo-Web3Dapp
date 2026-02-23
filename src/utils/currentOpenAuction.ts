@@ -12,7 +12,6 @@ function getCurrentOpenAuction(data: AuctionsLifecycleResponse): AuctionOpened |
     // If no auctions are open, return null
     if (stillOpenAuctions.length === 0) return null;
 
-    // Get the most recent auction (highest auctionId or latest blockNumber)
     const latestAuction = stillOpenAuctions.reduce((latest, current) => {
         return BigInt(current.auctionId) > BigInt(latest.auctionId) ? current : latest;
     });

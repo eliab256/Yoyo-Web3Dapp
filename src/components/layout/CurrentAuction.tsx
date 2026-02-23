@@ -42,12 +42,12 @@ const CurrentAuction: React.FC = () => {
         useCurrentDutchAuctionPrice();
     const { placeBid, isWritePending, isConfirming, isConfirmed, hash, error: placeBidError } = usePlaceBid();
 
-    // Determina se mostrare i box basandosi su Redux
+    // Determine whether to show the boxes based on Redux state
     const shouldShowSuccessBox = isConfirmed && hash && hash !== dismissedSuccessHash;
     const shouldShowErrorBox =
         placeBidError && (!dismissedErrorTimestamp || Date.now() - dismissedErrorTimestamp > 100);
 
-    // useEffect per chiudere il pannello quando la transazione è completata
+    // useEffect to close the confirm panel when a bid is successfully placed or when there's an error, to prevent it from being stuck open
     useEffect(() => {
         if (shouldShowSuccessBox || shouldShowErrorBox) {
             dispatch(setIsConfirmBidPanelOpen(false));
@@ -66,7 +66,6 @@ const CurrentAuction: React.FC = () => {
         };
     }, [ethPriceUSD]);
 
-    // Calculate user's bid in USD
     const userBidUsd = useMemo(() => {
         if (!bidValue || !ethPriceUSD) return '0.00';
         try {
@@ -78,7 +77,6 @@ const CurrentAuction: React.FC = () => {
         }
     }, [bidValue, ethPriceUSD]);
 
-    // Calculate minimum required bid based on auction type
     const minimumRequiredBid = useMemo(() => {
         if (!auction) return 0;
 
@@ -93,7 +91,6 @@ const CurrentAuction: React.FC = () => {
         }
     }, [auction, currentDutchAuctionPrice]);
 
-    // Check if the entered bid is valid
     const isBidValid = useMemo(() => {
         if (!bidValue) return false;
         const numericBid = parseFloat(bidValue);
@@ -119,7 +116,7 @@ const CurrentAuction: React.FC = () => {
         minimumBidChangeAmount,
     } = auction || {};
 
-    // Success State - Bid Placed (priorità massima per evitare che venga nascosto)
+    // Success State - Bid Placed 
     if (shouldShowSuccessBox && hash) {
         return (
             <SuccessBox
@@ -133,7 +130,7 @@ const CurrentAuction: React.FC = () => {
         );
     }
 
-    // Error State - Bid Placement (priorità alta)
+    // Error State - Bid Placement 
     if (shouldShowErrorBox && placeBidError) {
         return (
             <ErrorBox

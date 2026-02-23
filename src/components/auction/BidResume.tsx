@@ -51,7 +51,6 @@ const BidResume: React.FC<BidResumeProps> = ({ bidAmount, placeBid, isWritePendi
             dispatch(setAlreadyHigherBidder(true));
         }
 
-        //check if user has unclaimed tokens
         const hasUnclaimedToken: boolean = unclaimedNftId !== null;
         if (hasUnclaimedToken) {
             dispatch(setHasUnclaimedTokens(true));

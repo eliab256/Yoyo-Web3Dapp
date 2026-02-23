@@ -61,7 +61,6 @@ const useClaimRefund = () => {
         });
     };
 
-    // Query to check if the user has unclaimed refunds
     const { data: hasUnclaimedRefund } = useQuery({
         queryKey: ['claimRefund', address],
         queryFn: async () => {

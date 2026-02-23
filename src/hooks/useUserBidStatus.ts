@@ -53,10 +53,7 @@ const useUserBidStatus = (customAddress?: Address, customAuctionId?: string) => 
     const { address: connectedAddress } = useAccount();
     const { auction } = useCurrentAuction();
 
-    // Use acustomAddress if provided, otherwise use connectedAddress
     const targetAddress = customAddress ?? connectedAddress;
-
-    // Use customAuctionId if provided, otherwise use current auction ID
     const targetAuctionId = customAuctionId ?? auction?.auctionId.toString();
 
     const {
@@ -73,13 +70,11 @@ const useUserBidStatus = (customAddress?: Address, customAuctionId?: string) => 
         refetchOnWindowFocus: true,
     });
 
-    // Determine if the user has placed a bid
     const userHasBid =
         processedBids && targetAddress
             ? processedBids.orderedBidders.some(bidder => bidder.toLowerCase() === targetAddress.toLowerCase())
             : false;
 
-    // Determine if the user is currently winning
     const userIsWinning =
         processedBids && targetAddress
             ? processedBids.highestBidder.toLowerCase() === targetAddress.toLowerCase()

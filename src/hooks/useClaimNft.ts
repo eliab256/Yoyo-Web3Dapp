@@ -64,7 +64,6 @@ const useClaimNft = () => {
         }
     }, [isConfirmed, queryClient, address]);
 
-    // Query to get failed mints for the connected user
     const failedMintQuery = useQuery({
         queryKey: ['claimNft', address],
         queryFn: async (): Promise<FailedMint | null> => {
@@ -92,7 +91,6 @@ const useClaimNft = () => {
         });
     };
 
-    // Extract unclaimedNftId from the query data, if null set to null
     const unclaimedNftId = failedMintQuery.data?.tokenId ?? null;
 
     return {

@@ -1,4 +1,4 @@
-// Formatta il tempo rimanente
+
 export const formatTime = (seconds: number) => {
     const days = Math.floor(seconds / 86400);
     const hours = Math.floor((seconds % 86400) / 3600);
@@ -16,7 +16,6 @@ export const formatTime = (seconds: number) => {
     }
 };
 
-// Formatta la data di inizio
 export const formatStartDate = (timestamp: bigint | undefined) => {
     if (!timestamp) return '';
     const date = new Date(Number(timestamp) * 1000);

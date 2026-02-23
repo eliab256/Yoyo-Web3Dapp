@@ -9,7 +9,6 @@ function getOwnedNFTs(received: TransferEvent[], sent: TransferEvent[]): OwnedNF
                 !sent.some(s => s.tokenId === r.tokenId)
         )
         .map(transfer => ({
-            // map to OwnedNFT format
             tokenId: transfer.tokenId,
             mintedAt: transfer.blockTimestamp,
             mintTxHash: transfer.txHash,

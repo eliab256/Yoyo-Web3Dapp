@@ -16,10 +16,7 @@ async function getBidHistoryDetailFromAuctionId(auctionId: string): Promise<Proc
         return null;
     }
 
-    // 1. Find the bid with the highest bidAmount
     const highestBid = orderedBids.reduce((max, bid) => (BigInt(bid.bidAmount) > BigInt(max.bidAmount) ? bid : max));
-
-    // 2. Extract bidders in chronological order
     const orderedBidders = orderedBids.map(bid => bid.bidder);
 
     return {

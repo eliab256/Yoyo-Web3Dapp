@@ -33,7 +33,7 @@ contract YoyoAuctionBaseTest is Test {
 
     // Helper Constants
     uint256 constant VALID_TOKEN_ID = 5;
-    uint256 public invalidTokenId; // Inizializzato nel setUp()
+    uint256 public invalidTokenId; // Initialized on setUp()
     AuctionType constant ENGLISH_TYPE = AuctionType.ENGLISH;
     AuctionType constant DUTCH_TYPE = AuctionType.DUTCH;
 

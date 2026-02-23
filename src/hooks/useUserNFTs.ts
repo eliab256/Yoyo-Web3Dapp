@@ -56,10 +56,9 @@ import type { Address } from 'viem';
 const useUserNFTs = (customAddress?: Address) => {
     const { address: connectedAddress } = useAccount();
 
-    // Use customAddress if provided, otherwise use connectedAddress
     const targetAddress = customAddress ?? connectedAddress;
     return useQuery({
-        queryKey: ['userNFTs', targetAddress], // Cache key unica per indirizzo
+        queryKey: ['userNFTs', targetAddress],
         queryFn: async (): Promise<OwnedNFT[]> => {
             if (!targetAddress) return [];
 
