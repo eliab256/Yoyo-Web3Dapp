@@ -1,5 +1,9 @@
 import React from 'react';
 import nftData from '../../data/nftCardData';
+import useSoldNFTs from '../../hooks/useSoldNFTs';
+import SoldImage from '../../assets/images/Sold-Stamp.png';
+import { selectCurrentPage } from '../../redux/pagesSlice';
+import { useSelector } from 'react-redux';
 
 interface NftCardProps {
     tokenId: number;
@@ -10,11 +14,13 @@ interface NftCardProps {
 const NftCard: React.FC<NftCardProps> = ({ tokenId, onClick, isCurrentAuction }) => {
     const nft = nftData[tokenId];
     const { image, metadata } = nft || {};
+    const { data: isSold } = useSoldNFTs(tokenId);
+    const currentPage = useSelector(selectCurrentPage);
 
     return (
         <div
             onClick={() => onClick?.(tokenId)}
-            className={`bg-white rounded-xl overflow-hidden transition-shadow duration-300 max-w-sm mx-auto ${
+            className={`relative bg-white rounded-xl overflow-hidden transition-shadow duration-300 max-w-sm mx-auto ${
                 isCurrentAuction ? 'border-[6px] border-[var(--secondGreen)] bg-[var(--secondGreen)]' : ''
             }`}
             style={{ boxShadow: '0 10px 25px -5px rgba(130, 95, 170, 0.5), 0 8px 10px -6px rgba(130, 95, 170, 0.3)' }}
@@ -22,7 +28,7 @@ const NftCard: React.FC<NftCardProps> = ({ tokenId, onClick, isCurrentAuction })
             {/* Immagine NFT */}
             <div className="relative aspect-square">
                 <img src={image} alt={metadata?.name || `NFT #${tokenId}`} className="w-full h-full object-cover" />
-                
+
                 {/* Banner asta corrente sovrapposto */}
                 {isCurrentAuction && (
                     <div className="absolute top-0 left-0 right-0 bg-[var(--secondGreen)] text-white text-center py-2 px-4 font-semibold text-sm uppercase z-10">
@@ -36,6 +42,13 @@ const NftCard: React.FC<NftCardProps> = ({ tokenId, onClick, isCurrentAuction })
                 <h2 className="text-2xl font-semibold text-gray-800 mb-1">{metadata?.name || 'Unknown NFT'}</h2>
                 <p className="text-lg text-black-500">Token ID: {tokenId}</p>
             </div>
+
+            {/* Sold Stamp */}
+            {isSold && currentPage === 'gallery' && (
+                <div className="absolute top-0 left-0 right-0 bottom-0 flex items-end justify-end z-20 rounded-xl p-1">
+                    <img src={SoldImage} alt="Sold" className="w-1/2 h-1/2 object-contain" />
+                </div>
+            )}
         </div>
     );
 };
