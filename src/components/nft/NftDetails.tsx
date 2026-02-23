@@ -9,14 +9,18 @@ import { isAddress } from 'viem';
 import { useAccount } from 'wagmi';
 import SuccessBox from '../ui/SuccessBox';
 import ErrorBox from '../ui/ErrorBox';
-import { selectCurrentPage } from '../../redux/pagesSlice';
+import { selectCurrentPage, setCurrentPage } from '../../redux/pagesSlice';
 
 /**
  * Use MyNfts page selector to conditionally render Transfer button, if is not on MyNfts page hide it
  *
  */
 
-const NftDetails: React.FC<NftData> = ({ tokenId, metadata, image }) => {
+interface NftDetailsProps extends NftData {
+    isCurrentAuction?: boolean;
+}
+
+const NftDetails: React.FC<NftDetailsProps> = ({ tokenId, metadata, image, isCurrentAuction }) => {
     const dispatch = useDispatch();
     const currentPage = useSelector(selectCurrentPage);
     const { address: userAddress } = useAccount();
@@ -56,7 +60,7 @@ const NftDetails: React.FC<NftData> = ({ tokenId, metadata, image }) => {
             >
                 <XMarkIcon className="h-4 w-4 text-white" />
             </div>
-            
+
             {/* Title and Token ID */}
             <div className="flex flex-col items-center w-full mb-2">
                 <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-center">{name}</h2>
@@ -138,6 +142,20 @@ const NftDetails: React.FC<NftData> = ({ tokenId, metadata, image }) => {
                     ))}
                 </div>
             </div>
+
+            {/* Move to currentAuction page button */}
+            {isCurrentAuction && currentPage === 'gallery' && (
+                <button
+                    onClick={() => {
+                        dispatch(setCurrentPage('currentAuction'));
+                        dispatch(clearSelectedNft());
+                    }}
+                    className="px-8 py-3 rounded-lg bg-green-500 text-white hover:bg-green-600 transition-all duration-200"
+                >
+                    Go to Current Auction
+                </button>
+            )}
+
             {/* Transfer Button */}
             {currentPage === 'myNfts' && (
                 <button
