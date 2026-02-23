@@ -6,6 +6,7 @@ import { useEffect, useRef } from 'react';
 import { selectSelectedNftId, setSelectedNft } from '../../redux/selectedNftSlice';
 import NftDetails from '../nft/NftDetails';
 import { gsap } from 'gsap';
+import useCurrentAuction from '../../hooks/useCurrentAuction';
 
 const Gallery: React.FC = () => {
     const dispatch = useDispatch();
@@ -13,6 +14,8 @@ const Gallery: React.FC = () => {
     const selectedNft: NftData | undefined = nftData.find(nft => nft.tokenId === currentNftSelected);
     const imagesRef = useRef<(HTMLImageElement | null)[]>([]);
     const gridRef = useRef<HTMLDivElement>(null);
+    const { auction } = useCurrentAuction();
+    const openAuctionTokenId = auction ? Number(auction.tokenId) : null;
 
     useEffect(() => {
         const animateImages = () => {
@@ -144,7 +147,12 @@ const Gallery: React.FC = () => {
                 className="w-full min-h-[calc(100vh-56px)] sm:min-h-[calc(100vh-64px)] lg:min-h-[calc(100vh-80px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 px-4 pb-8 pt-6"
             >
                 {nftData.map(nft => (
-                    <NftCard key={nft.tokenId} {...nft} onClick={tokenId => dispatch(setSelectedNft(tokenId))} />
+                    <NftCard
+                        key={nft.tokenId}
+                        {...nft}
+                        onClick={tokenId => dispatch(setSelectedNft(tokenId))}
+                        isCurrentAuction={nft.tokenId === openAuctionTokenId}
+                    />
                 ))}
             </div>
 
